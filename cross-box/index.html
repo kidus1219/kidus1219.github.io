@@ -1,393 +1,115 @@
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en" >
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doksa</title> 
-    <style>
-        * {
-            padding: 0;
-            margin: 0;
-            box-sizing: border-box;
-            position: relative;
-            border: none;
-            outline: none;
-            --dimension: calc(min(100vh, 100vw) - 20px);
-            --spacing: calc(var(--dimension)/12)
-        }
-        html{
-            height: 100%;
-            overflow: hidden;
-            font-size: var(--spacing);
-        }
-        body{
-            height: 100%;
-            display: grid;
-            place-items: center;
-
-        }
-        .board{
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 1;
-            width: var(--dimension);
-            height: var(--dimension);
-            box-sizing: content-box;
-            border: solid 1px black;
-            border-width: 1px;
-            background-image:
-                linear-gradient(black, black .01rem, transparent .01rem, transparent calc(var(--spacing) - .01rem), black calc(var(--spacing) - .01rem), black var(--spacing))
-                ,linear-gradient(90deg, black, black .01rem, transparent .01rem, transparent calc(var(--spacing) - .01rem), black calc(var(--spacing) - .01rem), black var(--spacing))
-                ,linear-gradient(45deg, transparent, transparent calc(50% - .01rem), black calc(50% - .01rem), black calc(50% + .01rem), transparent calc(50% + .01rem), transparent)
-                ,linear-gradient(-45deg, transparent, transparent calc(50% - .01rem), black calc(50% - .01rem), black calc(50% + .01rem), transparent calc(50% + .01rem), transparent)
-                ;
-            background-size:var(--spacing) var(--spacing);
-            background-repeat: repeat;
-            background-color: white;
-            font-size: var(--spacing);
-        }
-        .point-holder{
-            position: absolute;
-            transform: translate(-50%, 50%);
-            width: 0.5rem;
-            height: 0.5rem;
-            border-radius: 50%;
-            display: grid;
-            place-items: center;
-            transition:background-color 0.3s;
-        }
-        .point-holder:hover{
-            background-color: #0004;
-        }
-        .point {
-            width: 0.1rem;
-            height: 0.1rem;
-            border-radius: 50%;
-            background-color: white;
-            border: solid .01px black;
-            outline: solid .01px black;
-        }
-        .point.red {
-            box-shadow: 0 0 0.1rem 2px red;
-        }
-        .point.green {
-            box-shadow: 0 0 0.1rem 2px green;
-        }
-        .piece{
-            position: absolute;
-            transform: translate(-50%, 50%);
-            width: 0.55rem;
-            height: 0.55rem;
-            border-radius: 50%;
-            background-color: white;
-            box-shadow:inset 0.05rem 0.05rem 0.1rem 0.15rem;
-            transition:bottom 0.3s, left 0.3s;
-        }
-        .piece.player{
-            color: rgb(200, 0, 0);
-            color: rgb(250, 250, 250);
-        }
-        .piece.opponent{
-            color: black;
-            color: rgb(250, 250, 250);
-        }
-        .side-bar{
-            position: fixed;
-            width: auto;
-            min-width: 1.7rem;
-            height: 100%;
-            padding: 8px;
-            border:solid 1px green;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            row-gap: 8px;
-        }
-        .side-bar.left{
-            justify-content: flex-start;
-            top:0rem;
-            left:0rem;
-        }
-        .side-bar.right{
-            flex-direction: column-reverse;
-            bottom: 0rem;
-            right: 0rem;
-        }
-        .majic{flex-grow:1}
-        .ctrl-btn{
-            width: 100%;
-            height: auto;
-            padding:0.5em 8px;
-            border-radius: 4px;
-            background-color: #45e;
-            color: white;
-            text-align: center;
-            font-family: monospace;
-            font-size: 0.5rem;
-            text-transform: capitalize;
-        }
-        .ctrl-btn img{
-            height: 0.3rem;
-            transform: scale(1.7);
-        }
-        .piece-holder{
-            width: fit-content;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            grid-gap: 8px;
-            padding: 8px;
-            border-radius: 5px;
-            font-size: 0.8rem;
-            border: solid 2px;
-            color: white;
-            font-family: monospace;
-        }
-        .piece-holder.player{
-            border-color: red;
-            border-color: skyblue;
-        }
-        .piece-holder.opponent{
-            border-color: black;
-            border-color: red;
-        }
-        .relative-piece{
-            position: relative;
-            transform: translate(0, 0);
-        }
-        .piece.opponent.selected-piece, .piece.player.selected-piece{
-            color: rgb(0, 110, 255);
-            color: rgb(90, 90, 90);
-        }
-        .dialogue-box{
-            z-index: 2;
-            height: 100%;
-            width: 100%;
-            background-color: #000b;
-            padding: 1rem;
-            color: white;
-            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            row-gap: 0.25rem;
-            text-align: center;
-            align-items: center;
-            justify-content: center;
-        }
-        .dialogue-box .ctrl-btn {width: fit-content;padding: 16px 32px;}
-        .dialogue-box h3 {
-            font-size: 90;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content= "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Damacase</title>
+	<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="board" id="board"></div>
-    <div class="side-bar left">
-        <div class="piece-holder player" onclick="" id="pieceHolderDiv1"></div>
-        <div class="majic"></div>
-        <div class="ctrl-btn" onclick="undo()"><img src="./images/undo.svg"></div>
-        <div class="ctrl-btn" onclick="restart()"><img src="./images/refresh.svg" alt=""></div>
-        <!--<div class="ctrl-btn" onclick=""><img src="./images/sun.svg"></div>-->
-    </div>
-    <div class="side-bar right">
-        <div class="piece-holder opponent" onclick="" id="pieceHolderDiv2"></div>
-        <div class="majic"></div>
-        <div class="ctrl-btn" id="turnDiv">turn</div>
-    </div>
-    <div class="dialogue-box" id="dialogue" style="display: none;">
-        <h3 id="messageH3">player wins</h3>
-        <div class="ctrl-btn" onclick="restart()">restart</div>
-    </div>
-    <script>
-    players_name = {'player': "BLUE", 'opponent': "RED"}
-    color_name = {'player': "skyblue", 'opponent': "red"}
-    function swithTurn(){
-        turn = Math.abs(--turn)
-        turnDiv.style.backgroundColor = ['skyblue', 'red'][turn]
-        turnDiv.textContent = `${['blue', 'red'][turn]}`
-    }
-    function placePiece(point){
-        const tempState = {
-            piece:selectedPiece,
-            pos:[selectedPiece.pos[0],selectedPiece.pos[1]],
-            positioned:selectedPiece.positioned == true
-        }
-        if (!selectedPiece) return
-        if (!selectedPiece.positioned) {
-            selectedPiece.classList.remove('relative-piece')
-            board.append(selectedPiece)
-            selectedPiece.player.remainedPieces--
-            selectedPiece.positioned = true
-        } else {
-            var [pointLeft, pointBottom] = point.pos
-            var [pieceLeft, pieceBottom] = selectedPiece.pos
-            
-            var isEveryPieceOut = selectedPiece.player.remainedPieces == 0
-            var areOneStepApart = (Math.abs(pointBottom - pieceBottom) + Math.abs(pointLeft - pieceLeft) ) <= 1
-            var areBothRed = point.pointColor == 'red' && selectedPiece.pointColor == 'red'
-            
-            if ( areBothRed || !areOneStepApart || !isEveryPieceOut) return
-        }
+<p id="demo" ></p>
+<div id="container">
+	<div id="gateContainer">
+		<div class="gateTitle">ዳማካሴ</div>
+		<div id="spBtn" class="gateBtn" onclick="turnPage(this, 'spContainer')">SinglePlayer</div>
+		<div id="mpBtn" class="gateBtn" onclick="alert('Coming Soon!\nMayyyy be!!')">MultiPlayer</div>
+		<div id="profileBtn" class="gateBtn" onclick="turnPage(this, 'profileContainer');document.getElementById('highscoreSpan').innerHTML = localStorage.highscore || 0">Profile</div>
+		<div id="storyBtn" class="gateBtn" onclick="turnPage(this, 'storyContainer');document.getElementById('storyAudio').play()">Story</div>
+		<div id="aboutBtn" class="gateBtn" onclick="turnPage(this, 'aboutContainer')">About</div>
+	</div>
+	<div id="gameContainer">
+		<canvas id="mainCanvas"></canvas>
+		<div id="gamePauseDialog">
+			<div>
+				<span>game paused</span>
+			</div>
+			<div id="gamePauseDialogRow2">
+				<div id="resumeGameBtn">Resume</div>
+				<div id="exitPauseGameBtn">Exit</div>
+			</div>
+		</div>
+		<div id="gameOverDialog">
+			<div>
+				<span>game over</span>
+			</div>
+			<div id="gameOverDialogRow2">
+				<div id="newGameBtn">New Game</div>
+				<div id="exitOverGameBtn">Exit</div>
+			</div>
+		</div>
+		<div id="scoreBoard" >
+			<div id="scoreBoardRow1">
+				<span class="score-label" >💧Health:</span>
+				<progress id="healthDisplay" max="100" value="100"></progress>
+			</div>
+			<div id="scoreBoardRow2">
+				<span class="score-label">🍀Age&nbsp&nbsp:</span>
+				<span id="ageDisplay">0</span>
+				<span id="pauseBtn">&#x23F8</span>
+			</div>
+		</div>
+		<div id="anaOut" class="ana-out" >
+			<div id="anaIn" class="ana-in" ></div>
+		</div>
+	</div>
+	<div id="spContainer" class="container">
+		<div onclick="turnPage(this, 'gateContainer')" class="backBtn">Back</div>
+		<div class="gateBtn" onclick="turnPage(this, 'gameContainer');startSurvivalGame()"> Survival </div>
+		<div class="gateBtn" onclick="alert('Coming Soon')"> Death Match </div>
+	</div>
+	<div id="mpContainer" class="container"></div>
+	<div id="profileContainer" class="container">
+		<div onclick="turnPage(this, 'gateContainer');" class="backBtn">Back</div>
+        <div>
+            High Score: <span id="highscoreSpan"></span>
+        </div>
+	</div>
+	<div id="storyContainer" class="container">
+		<div onclick="turnPage(this, 'gateContainer');document.getElementById('storyAudio').pause()" class="backBtn">Back</div>
+		<audio style="display: none;" id="storyAudio">
+  			<source src="audio/story.mp3" type="audio/mpeg">
+		</audio>
+		<span style="overflow: scroll; height: 50%;background: rgba(0,0,0,0.5);word-spacing: .5rem;">
+			In the year 2045E.C, humanity was thriving with technological advancements and space exploration.
+Little did they know that their prosperous existence would soon come under attack by a race of hostile aliens from the planet Kelebat in another galaxy.
+They had already conquered and destroyed hundreds of galaxies and thousands of planets before setting their sights on Earth.
+The aliens arrived on Earth four years ago and immediately began their ruthless campaign of destruction.
+They destroyed entire cities, killed millions, and left the planet in ruins. However, they had one final objective to complete their mission of extinction - to destroy the rare and precious plant "damacase" that grew only on Earth.
 
-        for (let i in tempState){
-            lastState[i] = tempState[i]
-        }
+The plant "damacase" was a rare species that held immense value to Earth and the universe as a whole.
+It was said to hold powerful healing properties that could cure even the most deadly diseases.
+The aliens knew this and sought to destroy it to eliminate any potential threats to their conquest.
+The plant is found only on earth in a marvelous place called  Ethiopia 🇪🇹 .
 
-        selectedPiece.style.left = point.style.left
-        selectedPiece.style.bottom = point.style.bottom
-        selectedPiece.pos = point.pos
-        selectedPiece.pointColor = point.pointColor
+You task as a skilled top Pilot is to transport the plant from Aba Jifar Mountain Jimma to a hidden underground bunker located in one of the islands in lake Tana.
+The bunker was designed to withstand even the most extreme conditions and was virtually impenetrable to any external threats.
 
-        if (checkWin(selectedPiece.player)) {
-            dialogue.style.display = "flex"
-            messageH3.setAttribute("style", "color:"+color_name[selectedPiece.player.pieceClassName])
-            messageH3.innerHTML = players_name[selectedPiece.player.pieceClassName] + " wins"
-        }
+You have to take Damacase there safely!
 
-        selectedPiece.classList.remove('selected-piece')
-        selectedPiece = null
-        
-        swithTurn()
-    }
-    function createPieces(player){
-        for (let i = 0; i < player.remainedPieces; i++){
-            var playerPiece = document.createElement('img')
-            playerPiece.src = "./images/P_"+player.pieceClassName+".png"
-            playerPiece.className = "piece relative-piece " + player.pieceClassName
-            playerPiece.id = player.pieceClassName + i
-            playerPiece.onclick = function(){
-                if (player.turn != turn) {
-                    if (turn == -1) {
-                        lastState.turn = -1
-                        turn = player.turn
-                    }
-                    else return
-                } else {
-                    lastState.turn = 0
-                }
-                selectedPiece && selectedPiece.classList.remove('selected-piece')
-                selectedPiece = this
-                selectedPiece.classList.add('selected-piece')
-            }
-            playerPiece.pos = [-1, -1]
-            playerPiece.player = player
-            player.pieces.push(playerPiece)
-            player.pieceHolderDiv.append(playerPiece)
-        }
-    }
-    function createPoints(){
-        for (let i = 0; i < 13; ++i){
-            for (let j = 0; j < 13; ++j){
-                var pointHolder = document.createElement("div")
-                pointHolder.className = "point-holder"
-                pointHolder.style.bottom = j * spacing + "rem"
-                pointHolder.style.left = i * spacing + "rem"
-                pointHolder.pos = [i,j]
-                pointHolder.pointColor = 'green'
-                pointHolder.onclick = function(){placePiece(this)}
-                board.append(pointHolder)
-                var point = document.createElement("div")
-                point.className = "point green"
-                pointHolder.append(point)
-            }
-        }
-        for (let i = 0; i < 12; ++i){
-            for (let j = 0; j < 12; ++j){
-                var pointHolder = document.createElement("div")
-                pointHolder.className = "point-holder"
-                pointHolder.style.bottom = 0.5 + j * spacing + "rem"
-                pointHolder.style.left = 0.5 + i * spacing + "rem"
-                pointHolder.pos = [0.5 + i, 0.5 + j]
-                pointHolder.pointColor = 'red'
-                pointHolder.onclick = function(){placePiece(this)}
-                board.append(pointHolder)
+Good Luck
+		</span>
+	</div>
+	<div id="aboutContainer" class="container">
+		<div onclick="turnPage(this, 'gateContainer')" class="backBtn">Back</div>
+		<div class="aboutText">
 
-                var point = document.createElement("div")
-                point.className = "point red"
-                pointHolder.append(point)
-            }
-        }
-    }
-    function restart(){
-        player1.remainedPieces = pieceCount
-        player2.remainedPieces = pieceCount
-        player1.pieceHolderDiv.innerHTML = player2.pieceHolderDiv.innerHTML = ""
-        player1.pieces = []
-        player2.pieces = []
-        createPieces(player1)
-        createPieces(player2)
-        board.innerHTML = ''
-        createPoints()
-        turnDiv.style.backgroundColor = "#45e"
-        turnDiv.textContent = "turn"
-        turn = -1
-        lastState = {
-            turn: -1
-        }
-        dialogue.style.display = 'none'
-        messageH3.innerHTML = ''
-    }
-    function undo(){
-        if (lastPiece = lastState.piece){
-            if (!lastState.positioned){
-                lastPiece.classList.add('relative-piece')
-                lastPiece.style.bottom = lastPiece.style.left = 0
-                lastPiece.player.pieceHolderDiv.append(lastPiece)
-                lastPiece.positioned = false
-                lastPiece.player.remainedPieces++
-            } else {
-                [i, j] = lastState.pos
-                lastPiece.style.bottom = j * spacing + "rem"
-                lastPiece.style.left = i * spacing + "rem"
-                lastPiece.pos = [i, j]
-            }
-            lastState.piece = null
-            if (lastState.turn != -1) {
-                swithTurn()
-            } else {
-                turnDiv.style.backgroundColor = "#45e"
-                turnDiv.textContent = "turn"
-                turn = -1
-                lastState = {
-                    turn: -1
-                }
-            }
-        }
-    }
-    function checkWin(player){
-        var isRowComplete = isColumnComplete = true
-        const [column, row] = player.pieces[0].pos
-        for (let piece of player.pieces){
-            if (!piece.positioned || piece.pointColor == 'red') return false
-            if (piece.pos[1] != row) isRowComplete = false
-            if (piece.pos[0] != column) isColumnComplete = false
-        }
-        return isRowComplete || isColumnComplete
-    }
-    const spacing = 1, pieceCount = 13
-    var selectedPiece
-    var turn = -1
-    var lastState = {
-        turn: -1
-    }
-    const player1 = {
-        remainedPieces: pieceCount,
-        pieceClassName: 'player',
-        turn: 0, 
-        pieceHolderDiv: document.getElementById('pieceHolderDiv1'),
-        pieces:[]
-    }
-    const player2 = {
-        remainedPieces: pieceCount,
-        pieceClassName: 'opponent',
-        turn: 1, 
-        pieceHolderDiv: document.getElementById('pieceHolderDiv2'),
-        pieces:[]
-    }
-    createPieces(player1)
-    createPieces(player2)
-    createPoints()
-    </script>
+			Developer: kidus
+			<br>
+			version: 1.0
+			<br>
+			contact: kidus1219mail@gmail.com
+			<br><br>
+			Tell me about bugs you found, your thoughts and feedbacks
+		</div>
+		<textarea class="feedbackBox" rows="5">
+		</textarea>
+		<div class="feedbackBtn">submit</div>
+	</div>
+</div>
+
+<script src="js/utils.js"></script>
+<script src="js/actors.js"></script>
+<script src="js/main.js"></script>
+
 </body>
 </html>
