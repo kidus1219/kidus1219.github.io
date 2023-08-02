@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content= "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Damacase</title>
+	<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<p id="demo" ></p>
+<div id="container">
+	<div id="gateContainer">
+		<div class="gateTitle">ዳማካሴ</div>
+		<div id="spBtn" class="gateBtn" onclick="turnPage(this, 'spContainer')">SinglePlayer</div>
+		<div id="mpBtn" class="gateBtn" onclick="alert('Coming Soon!\nMayyyy be!!')">MultiPlayer</div>
+		<div id="profileBtn" class="gateBtn" onclick="turnPage(this, 'profileContainer');document.getElementById('highscoreSpan').innerHTML = localStorage.highscore || 0">Profile</div>
+		<div id="storyBtn" class="gateBtn" onclick="turnPage(this, 'storyContainer');document.getElementById('storyAudio').play()">Story</div>
+		<div id="aboutBtn" class="gateBtn" onclick="turnPage(this, 'aboutContainer')">About</div>
+	</div>
+	<div id="gameContainer">
+		<canvas id="mainCanvas"></canvas>
+		<div id="gamePauseDialog">
+			<div>
+				<span>game paused</span>
+			</div>
+			<div id="gamePauseDialogRow2">
+				<div id="resumeGameBtn">Resume</div>
+				<div id="exitPauseGameBtn">Exit</div>
+			</div>
+		</div>
+		<div id="gameOverDialog">
+			<div>
+				<span>game over</span>
+			</div>
+			<div id="gameOverDialogRow2">
+				<div id="newGameBtn">New Game</div>
+				<div id="exitOverGameBtn">Exit</div>
+			</div>
+		</div>
+		<div id="scoreBoard" >
+			<div id="scoreBoardRow1">
+				<span class="score-label" >💧Health:</span>
+				<progress id="healthDisplay" max="100" value="100"></progress>
+			</div>
+			<div id="scoreBoardRow2">
+				<span class="score-label">🍀Age&nbsp&nbsp:</span>
+				<span id="ageDisplay">0</span>
+				<span id="pauseBtn">&#x23F8</span>
+			</div>
+		</div>
+		<div id="anaOut" class="ana-out" >
+			<div id="anaIn" class="ana-in" ></div>
+		</div>
+	</div>
+	<div id="spContainer" class="container">
+		<div onclick="turnPage(this, 'gateContainer')" class="backBtn">Back</div>
+		<div class="gateBtn" onclick="turnPage(this, 'gameContainer');startSurvivalGame()"> Survival </div>
+		<div class="gateBtn" onclick="alert('Coming Soon')"> Death Match </div>
+	</div>
+	<div id="mpContainer" class="container"></div>
+	<div id="profileContainer" class="container">
+		<div onclick="turnPage(this, 'gateContainer');" class="backBtn">Back</div>
+        <div>
+            High Score: <span id="highscoreSpan"></span>
+        </div>
+	</div>
+	<div id="storyContainer" class="container">
+		<div onclick="turnPage(this, 'gateContainer');document.getElementById('storyAudio').pause()" class="backBtn">Back</div>
+		<audio style="display: none;" id="storyAudio">
+  			<source src="audio/story.mp3" type="audio/mpeg">
+		</audio>
+		<span style="overflow: scroll; height: 50%;background: rgba(0,0,0,0.5);word-spacing: .5rem;">
+			In the year 2045E.C, humanity was thriving with technological advancements and space exploration.
+Little did they know that their prosperous existence would soon come under attack by a race of hostile aliens from the planet Kelebat in another galaxy.
+They had already conquered and destroyed hundreds of galaxies and thousands of planets before setting their sights on Earth.
+The aliens arrived on Earth four years ago and immediately began their ruthless campaign of destruction.
+They destroyed entire cities, killed millions, and left the planet in ruins. However, they had one final objective to complete their mission of extinction - to destroy the rare and precious plant "damacase" that grew only on Earth.
+
+The plant "damacase" was a rare species that held immense value to Earth and the universe as a whole.
+It was said to hold powerful healing properties that could cure even the most deadly diseases.
+The aliens knew this and sought to destroy it to eliminate any potential threats to their conquest.
+The plant is found only on earth in a marvelous place called  Ethiopia 🇪🇹 .
+
+You task as a skilled top Pilot is to transport the plant from Aba Jifar Mountain Jimma to a hidden underground bunker located in one of the islands in lake Tana.
+The bunker was designed to withstand even the most extreme conditions and was virtually impenetrable to any external threats.
+
+You have to take Damacase there safely!
+
+Good Luck
+		</span>
+	</div>
+	<div id="aboutContainer" class="container">
+		<div onclick="turnPage(this, 'gateContainer')" class="backBtn">Back</div>
+		<div class="aboutText">
+
+			Developer: kidus
+			<br>
+			version: 1.0
+			<br>
+			contact: kidus1219mail@gmail.com
+			<br><br>
+			Tell me about bugs you found, your thoughts and feedbacks
+		</div>
+		<textarea class="feedbackBox" rows="5">
+		</textarea>
+		<div class="feedbackBtn">submit</div>
+	</div>
+</div>
+
+<script src="js/utils.js"></script>
+<script src="js/actors.js"></script>
+<script src="js/main.js"></script>
+
+</body>
+</html>
